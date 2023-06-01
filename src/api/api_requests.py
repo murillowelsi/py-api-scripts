@@ -21,6 +21,10 @@ def listUsers():
                 "Content-type": "application/json",
                 "Authorization": f"Bearer {accessToken}",
             },
+            params={
+                "page": 1,
+                "per_page": 100,
+            },
         )
         usersList = response.json()
         for user in usersList:
@@ -32,9 +36,44 @@ def listUsers():
 
 def createUser(body):
     try:
-        print(f"Token generated for the user: {body['name']}")
         response = requests.post(
             f"{apiUrl}/users",
+            json=body,
+            headers={
+                "Content-type": "application/json",
+                "Authorization": f"Bearer {accessToken}",
+            },
+        )
+        print(f"API status code: {response.status_code}")
+    except Exception as e:
+        print(e)
+
+
+def listTodos():
+    try:
+        response = requests.get(
+            f"{apiUrl}/todos",
+            headers={
+                "Content-type": "application/json",
+                "Authorization": f"Bearer {accessToken}",
+            },
+            params={
+                "page": 1,
+                "per_page": 100,
+            },
+        )
+        todosList = response.json()
+        for todo in todosList:
+            print(todo["title"])
+        print(f"API status code: {response.status_code}")
+    except Exception as e:
+        print(e)
+
+
+def createTodo(body):
+    try:
+        response = requests.post(
+            f"{apiUrl}/todos",
             json=body,
             headers={
                 "Content-type": "application/json",
